@@ -1,19 +1,23 @@
 <div class="max-w-2xl container mx-auto pt-5">
 
-<h1 class="font-bold mb-2 text-center text-lg">{{ title | titlecase }}</h1>
+  <h1 class="font-bold mb-2 text-center text-lg">{{ title | titlecase }}</h1>
+
+  <div *ngIf="loading" class="fixed inset-0 flex flex-col items-center justify-center">
+    <div class="relative block h-20 w-20">
+      <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader delay-0"></span>
+      <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-3 delay-200"></span>
+      <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-6 delay-400"></span>
+      <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-9 delay-600"></span>
+      <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-12 delay-800"></span>
+    </div>
+    <p *ngIf="errorStatus === 500" class="mt-6 text-center text-gray-600">The site is under maintenance. Please try again later.</p>
+  </div>
 
   <app-product
-    *ngFor="let product of products; let i = index"
+    *ngFor="let product of products$ | async; let i = index"
     [product]="product"
   >
   </app-product>
 
-</div>
-<div class="relative block h-20 w-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-  <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader delay-0"></span>
-  <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-3 delay-200"></span>
-  <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-6 delay-400"></span>
-  <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-9 delay-600"></span>
-  <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-12 delay-800"></span>
 </div>
 
