@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   title = 'ng crash course';
   products$: Observable<Product[]>;
   loading: boolean;
+  term: '';
 
   constructor(private productsService: ProductService) { }
 
