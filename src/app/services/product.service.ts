@@ -3,7 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { delay, Observable, retry, throwError } from 'rxjs';
 import { Product } from '../models/product';
 import { ErrorService } from './error.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,8 @@ export class ProductService {
     private http: HttpClient,
     private errorService: ErrorService
   ) {}
+
+  products: Product[] =[]
 
   getAll(): Observable<Product[]> {
     const shouldFail = Math.random() < 0.5;
@@ -25,7 +28,7 @@ export class ProductService {
     }
 
     // Real request if no error occurred
-    return this.http.get<Product[]>('https://fakestoreapi.com/products', {
+    return this.http.get<Product[]>(`${environment.apiUrl}/products`, {
       // First params variant:
       // params: new HttpParams().append('limit', 5)
 
@@ -41,8 +44,16 @@ export class ProductService {
     }).pipe(
       delay(1000),
       retry(2),
+      tap(products => this.products = products),
       catchError(this.errorHandler.bind(this))
     );
+  }
+
+  create(product: Product): Observable<Product> {
+    return this.http.post<Product>(`${environment.apiUrl}/products`, product)
+      .pipe(
+      tap(product => this.products.push(product))
+    )
   }
 
   private errorHandler(error: HttpErrorResponse) {
