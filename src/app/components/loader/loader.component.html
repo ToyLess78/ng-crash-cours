@@ -1,0 +1,12 @@
+<div class="fixed inset-0 flex flex-col items-center justify-center">
+  <div class="relative block h-20 w-20">
+    <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader delay-0"></span>
+    <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-3 delay-200"></span>
+    <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-6 delay-400"></span>
+    <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-9 delay-600"></span>
+    <span class="loader-item absolute block bottom-2.5 w-2.5 h-1.5 bg-[rgba(0,0,0,0.25)] animate-loader left-12 delay-800"></span>
+  </div>
+  <p *ngIf="errorService.error$ | async as error" class="mt-6 text-center text-gray-600">
+    {{error}}
+  </p>
+</div>

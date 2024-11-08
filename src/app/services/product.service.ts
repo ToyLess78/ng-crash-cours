@@ -1,28 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { delay, Observable, throwError } from 'rxjs';
 import { Product } from '../models/product';
+import { ErrorService } from './error.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private http: HttpClient,
+    private errorService: ErrorService
+  ) {}
 
   getAll(): Observable<Product[]> {
-
-    // Simulate a random error 500 (for example, in 50% of cases)
     const shouldFail = Math.random() < 0.5;
 
     if (shouldFail) {
       return throwError(() => ({ status: 500, message: 'Internal Server Error' })).pipe(
-        delay(1000)
+        delay(1000),
+        catchError(this.errorHandler.bind(this))
       );
     }
 
     // Real request if no error occurred
-    return  this.http.get<Product[]>('https://fakestoreapi.com/products', {
+    return this.http.get<Product[]>('https://fakestoreapi.com/products', {
       // First params variant:
       // params: new HttpParams().append('limit', 5)
 
@@ -36,7 +39,13 @@ export class ProductService {
         fromObject: {limit: 5}
       })
     }).pipe(
-      delay(2000)
-    )
+      delay(1000),
+      catchError(this.errorHandler.bind(this))
+    );
+  }
+
+  private errorHandler(error: HttpErrorResponse) {
+    this.errorService.handle(error.message, error.status);
+    return throwError(() => error.message);
   }
 }
