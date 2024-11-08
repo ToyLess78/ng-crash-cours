@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from './services/product.service';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ModalService } from './services/modal.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,10 @@ export class AppComponent implements OnInit {
   loading: boolean;
   term: '';
 
-  constructor(private productsService: ProductService) { }
+  constructor(
+    private productsService: ProductService,
+    public modalService: ModalService
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
